@@ -1,31 +1,60 @@
 
 
 #' @export
-dimple <- function(x,
+dimple <- function(data,
+                   x = NULL,
                    y = NULL, 
                    xlab = NULL, 
                    ylab = NULL, 
                    width = NULL, 
                    height = NULL) {
+   
+  # validate we got data
+  if (missing(data))
+    stop("data parameter is required")
   
-  # determine default labels
-  xlabel <- deparse(substitute(x))
-  ylabel <- if (!missing(y)) 
-    deparse(substitute(y))
+  # get the unevaluated data expression (for y axis label)
+  dataExpr <- deparse(substitute(data))
   
-  # determine coordinates
-  coords <- grDevices::xy.coords(x, y, xlabel, ylabel)
+  # resolve x and y formula-style syntax
+  if (inherits(x, "formula"))
+    x <- lattice::latticeParseFormula(x, data = data)$right.name
+  if (inherits(y, "formula"))
+    y <- lattice::latticeParseFormula(y, data = data)$right.name
+   
+  # if this isn't a data frame then generate one using xy.coords
+  if (!is.data.frame(data)) {
+    coords <- grDevices::xy.coords(data, xlab = x, ylab = y)
+    if (is.null(coords$xlab))
+      coords$xlab <- "x"
+    if (is.null(coords$ylab))
+      coords$ylab <- "y"
+    data <- list()
+    data[[coords$xlab]] <- coords$x
+    data[[coords$ylab]] <- coords$y
+    data <- as.data.frame(data)
+  }
   
-  # final determination of labels
-  xlab <- ifelse(is.null(xlab), coords$xlab, xlab)
-  ylab <- ifelse(is.null(ylab), coords$ylab, ylab)
+  # resolve x and y
+  if (is.null(x)) {
+    x <- names(data)[[1]]
+  }
+  if (is.null(y)) {
+    y <- names(data)[[2]]
+    # no y or ylab means use the original expression as the y label
+    if (is.null(ylab)) 
+      ylab <- dataExpr
+  }
   
-  # create widget data
-  data <- data.frame(x = coords$x, y = coords$y)
-  
+  # resolve labels
+  xlab <- ifelse(is.null(xlab), x, xlab)
+  ylab <- ifelse(is.null(ylab), y, ylab)
+   
   # create options
   options <- list()
+  options$xval <- x
   options$xlab <- xlab
+  options$yval <- y
   options$ylab <- ylab
   
   # create widget

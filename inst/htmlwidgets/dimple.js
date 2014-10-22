@@ -31,10 +31,10 @@ HTMLWidgets.widget({
       var svg = dimple.newSvg(el, "100%", "100%");
       var chart = new dimple.chart(svg, data);
       
-      var xAxis = chart.addCategoryAxis("x", "x");
+      var xAxis = chart.addCategoryAxis("x", options.xval);
       xAxis.title = options.xlab;
       
-      var yAxis = chart.addMeasureAxis("y", "y");
+      var yAxis = chart.addMeasureAxis("y", options.yval);
       yAxis.title = options.ylab;
       
       chart.addSeries(null, dimple.plot.bubble);
