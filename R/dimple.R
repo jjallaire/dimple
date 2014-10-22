@@ -50,17 +50,20 @@ dimple <- function(data,
   xlab <- ifelse(is.null(xlab), x, xlab)
   ylab <- ifelse(is.null(ylab), y, ylab)
    
-  # create options
-  options <- list()
-  options$xval <- x
-  options$xlab <- xlab
-  options$yval <- y
-  options$ylab <- ylab
+  # create "auto" options (overriden by explicit axes, series, etc.)
+  auto <- list()
+  auto$xAxis <- axis(position = "x", 
+                     title = xlab, 
+                     categoryFields = x)
+  auto$yAxis <- axis(position = "y", 
+                     title = ylab, 
+                     measure = y)
+  auto$series <- series("bubble")
   
   # create widget
   htmlwidgets::createWidget(
     name = "dimple",
-    x = list(options = options, data = data),
+    x = list(options = list(auto = auto), data = data),
     width = width,
     height = height,
     htmlwidgets::sizingPolicy(viewer.paneHeight = 400, 

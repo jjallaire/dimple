@@ -31,18 +31,48 @@ HTMLWidgets.widget({
       var svg = dimple.newSvg(el, "100%", "100%");
       var chart = new dimple.chart(svg, data);
       
-      var xAxis = chart.addCategoryAxis("x", options.xval);
-      xAxis.title = options.xlab;
-      
-      var yAxis = chart.addMeasureAxis("y", options.yval);
-      yAxis.title = options.ylab;
-      
-      chart.addSeries(null, dimple.plot.bubble);
+      // auto-axes and series
+      this.addAxis(chart, options.auto.xAxis); 
+      this.addAxis(chart, options.auto.yAxis);
+      this.addSeries(chart, options.auto.series);
+         
+      // draw the chart
       chart.draw();
       
       // save instance
       instance.chart = chart;
     }
   },
+  
+  addAxis: function(chart, axis) {
+    
+    var ax = chart.addAxis(axis.position,
+                           axis.categoryFields,
+                           axis.measure,
+                           axis.timeField);
+   
+    ax.title = axis.title;
+    
+    return ax;
+  },
+  
+  addSeries: function(chart, series) {
+    
+    // determine plot function
+    var plotFunction = null;
+    if (series.type == "bubble")
+      plotFunction = dimple.plot.bubble;
+    else if (series.type == "bar")
+      plotFunction = dimple.plot.bar;
+    else if (series.type == "line")
+      plotFunction = dimple.plot.line;
+    else if (series.type == "area")
+      plotFunction = dimple.plot.area;
+    else
+      throw "Invalid series type: " + series;
+
+    // add series
+    return chart.addSeries(null, plotFunction);   
+  }
   
 });
