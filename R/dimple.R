@@ -54,7 +54,7 @@ dimple <- function(data,
   auto <- list()
   auto$xAxis <- axis(position = "x", 
                      title = xlab, 
-                     measure = x)
+                     categoryFields = x)
   auto$yAxis <- axis(position = "y", 
                      title = ylab, 
                      measure = y)
