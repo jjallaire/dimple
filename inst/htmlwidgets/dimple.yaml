@@ -6,7 +6,7 @@ dependencies:
   - name: dimple
     version: 2.1.0
     src: "htmlwidgets/lib/dimple"
-    script: dimple.v2.1.0.min.js
+    script: dimple.v2.1.0.js
     
 
 
