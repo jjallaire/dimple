@@ -3,7 +3,6 @@
 #' @export
 dimple <- function(x,
                    y = NULL, 
-                   main = NULL, 
                    xlab = NULL, 
                    ylab = NULL, 
                    width = NULL, 
@@ -26,7 +25,6 @@ dimple <- function(x,
   
   # create options
   options <- list()
-  options$main = main
   options$xlab <- xlab
   options$ylab <- ylab
   
