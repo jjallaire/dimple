@@ -16,15 +16,12 @@ HTMLWidgets.widget({
   renderValue: function(el, x, instance) {
     
     // resolve data
-    var data = [
-      { "Word":"Hello", "Awesomeness":2000 },
-      { "Word":"World", "Awesomeness":3000 }
-    ];
+    var data = HTMLWidgets.dataframeToD3(x.data);
     
     // update existing instance
     if (instance.chart) {
       
-      instance.chart.data(data);
+      instance.chart.data = data;
       instance.chart.draw();
       
     } else { // create new instance
@@ -32,9 +29,9 @@ HTMLWidgets.widget({
       // create chart
       var svg = dimple.newSvg(el, "100%", "100%");
       var chart = new dimple.chart(svg, data);
-      chart.addCategoryAxis("x", "Word");
-      chart.addMeasureAxis("y", "Awesomeness");
-      chart.addSeries(null, dimple.plot.bar);
+      chart.addCategoryAxis("x", "speed");
+      chart.addMeasureAxis("y", "dist");
+      chart.addSeries(null, dimple.plot.bubble);
       chart.draw();
       
       // save instance

@@ -1,3 +1,4 @@
+library(shiny)
 library(dimple)
 
 shinyUI(fluidPage(
@@ -5,7 +6,9 @@ shinyUI(fluidPage(
   titlePanel("Shiny dimple.js"),
   
   sidebarLayout(
-    sidebarPanel(),
+    sidebarPanel(
+      checkboxInput("head", label = "Head Only", value = FALSE)
+    ),
     mainPanel(
       dimpleOutput("dimple")
     )

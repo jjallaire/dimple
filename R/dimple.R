@@ -5,6 +5,8 @@ dimple <- function(data, width = NULL, height = NULL) {
   
   # create x
   x <- list()
+  x$options <- list()
+  x$data <- data
   
   # create widget
   htmlwidgets::createWidget(
