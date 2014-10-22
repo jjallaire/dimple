@@ -33,18 +33,18 @@ dimple <- function(data,
     data[[coords$xlab]] <- coords$x
     data[[coords$ylab]] <- coords$y
     data <- as.data.frame(data)
+    
+    # if no y or ylab is specified then use the original 
+    # expression as the y label
+    if (is.null(y) && is.null(ylab))
+      ylab <- dataExpr
   }
   
   # resolve x and y
-  if (is.null(x)) {
+  if (is.null(x))
     x <- names(data)[[1]]
-  }
-  if (is.null(y)) {
+  if (is.null(y))
     y <- names(data)[[2]]
-    # no y or ylab means use the original expression as the y label
-    if (is.null(ylab)) 
-      ylab <- dataExpr
-  }
   
   # resolve labels
   xlab <- ifelse(is.null(xlab), x, xlab)
@@ -54,11 +54,12 @@ dimple <- function(data,
   auto <- list()
   auto$xAxis <- axis(position = "x", 
                      title = xlab, 
-                     categoryFields = x)
+                     measure = x)
   auto$yAxis <- axis(position = "y", 
                      title = ylab, 
                      measure = y)
-  auto$series <- series("bubble")
+  auto$series <- series(categoryFields = NULL, 
+                        plotFunction = "bubble")
   
   # create widget
   htmlwidgets::createWidget(
