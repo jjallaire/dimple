@@ -60,19 +60,19 @@ HTMLWidgets.widget({
     
     // determine plot function
     var plotFunction = null;
-    if (series.type == "bubble")
+    if (series.plotFunction == "bubble")
       plotFunction = dimple.plot.bubble;
-    else if (series.type == "bar")
+    else if (series.plotFunction == "bar")
       plotFunction = dimple.plot.bar;
-    else if (series.type == "line")
+    else if (series.plotFunction == "line")
       plotFunction = dimple.plot.line;
-    else if (series.type == "area")
+    else if (series.plotFunction == "area")
       plotFunction = dimple.plot.area;
     else
       throw "Invalid series type: " + series;
 
     // add series
-    return chart.addSeries(null, plotFunction);   
+    return chart.addSeries(series.categoryFields, plotFunction, series.axes);   
   }
   
 });

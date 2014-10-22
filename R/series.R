@@ -1,4 +1,6 @@
 
-series <- function(type) {
-  list(type = type)
+series <- function(categoryFields, plotFunction, axes = NULL) {
+  list(categoryFields = categoryFields,
+       plotFunction = plotFunction,
+       axes = axes)
 }
