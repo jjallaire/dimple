@@ -1,17 +1,39 @@
 
 
 #' @export
-dimple <- function(data, width = NULL, height = NULL) {
+dimple <- function(x,
+                   y = NULL, 
+                   main = NULL, 
+                   xlab = NULL, 
+                   ylab = NULL, 
+                   width = NULL, 
+                   height = NULL) {
   
-  # create x
-  x <- list()
-  x$options <- list()
-  x$data <- data
+  # determine default labels
+  xlabel <- deparse(substitute(x))
+  ylabel <- if (!missing(y)) 
+    deparse(substitute(y))
+  
+  # determine coordinates
+  coords <- grDevices::xy.coords(x, y, xlabel, ylabel)
+  
+  # final determination of labels
+  xlab <- ifelse(is.null(xlab), coords$xlab, xlab)
+  ylab <- ifelse(is.null(ylab), coords$ylab, ylab)
+  
+  # create widget data
+  data <- data.frame(x = coords$x, y = coords$y)
+  
+  # create options
+  options <- list()
+  options$main = main
+  options$xlab <- xlab
+  options$ylab <- ylab
   
   # create widget
   htmlwidgets::createWidget(
     name = "dimple",
-    x = x,
+    x = list(options = options, data = data),
     width = width,
     height = height,
     htmlwidgets::sizingPolicy(viewer.paneHeight = 400, 

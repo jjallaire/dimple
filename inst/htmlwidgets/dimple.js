@@ -15,7 +15,8 @@ HTMLWidgets.widget({
 
   renderValue: function(el, x, instance) {
     
-    // resolve data
+    // alias/resolve options and data
+    var options = x.options;
     var data = HTMLWidgets.dataframeToD3(x.data);
     
     // update existing instance
@@ -29,8 +30,13 @@ HTMLWidgets.widget({
       // create chart
       var svg = dimple.newSvg(el, "100%", "100%");
       var chart = new dimple.chart(svg, data);
-      chart.addCategoryAxis("x", "speed");
-      chart.addMeasureAxis("y", "dist");
+      
+      var xAxis = chart.addCategoryAxis("x", "x");
+      xAxis.title = options.xlab;
+      
+      var yAxis = chart.addMeasureAxis("y", "y");
+      yAxis.title = options.ylab;
+      
       chart.addSeries(null, dimple.plot.bubble);
       chart.draw();
       
